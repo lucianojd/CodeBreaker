@@ -61,6 +61,22 @@ public class Board
 	
 	private boolean checkGuessSyntax(String guess)
 	{
+		if(guess.length() == code.length)
+		{
+			for(int i = 0; i < code.length; i++)
+			{
+				try
+				{
+					Integer.parseInt(guess);
+				} 
+				catch(NumberFormatException e)
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+		
 		return false;
 	}
 	
