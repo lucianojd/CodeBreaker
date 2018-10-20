@@ -23,10 +23,43 @@ public class Board
 	public void newGame()
 	{
 		buildBoard();
+		
 		int[] guess = new int[code.length];
+		int numGuess = 0;
+		
+		System.out.println("You have " + attempts + " attempts to guess a " + code.length + " digit long code.");
+		
+		
+		while(numGuess < attempts)
+		{
+			String guessInput;
+			String digit;
+			boolean syntax;
+			
+			guessInput = input.nextLine();
+			syntax = checkGuessSyntax(guessInput);
+			
+			if(syntax)
+			{
+			
+				for(int i = 0; i < code.length; i++)
+				{
+					digit = guessInput.substring(i, i + 1); 
+					guess[i] = Integer.parseInt(digit);
+				}
+			
+				System.out.println(printCode(guess));
+				numGuess++;
+			} 
+			else if(!syntax)
+			{
+				System.out.println("Not a valid code.");
+			}
+		}
+		
 	}
 	
-	private boolean checkGuessSyntax(int[] guess)
+	private boolean checkGuessSyntax(String guess)
 	{
 		return false;
 	}
@@ -44,7 +77,7 @@ public class Board
 		}
 	}
 	
-	public String toString()
+	private String printCode(int[] code)
 	{
 		StringBuilder codeReturn = new StringBuilder(code[0] + " ");
 		
