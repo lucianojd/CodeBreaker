@@ -26,35 +26,48 @@ public class Board
 		
 		int[] guess = new int[code.length];
 		int numGuess = 0;
+		String guessInput;
+		boolean temp;
 		
 		System.out.println("You have " + attempts + " attempts to guess a " + code.length + " digit long code.");
 		
 		
 		while(numGuess < attempts)
-		{
-			String guessInput;
-			String digit;
-			boolean syntax;
-			
+		{	
+			System.out.printf("Enter your guess %11s", "(" + numGuess + "/" + attempts + ") : ");
 			guessInput = input.nextLine();
-			syntax = checkGuessSyntax(guessInput);
-			
-			if(syntax)
-			{
-			
+			temp = checkGuessSyntax(guessInput);
+		
+		//	Checks to make sure guess has proper syntax. Otherwise tells the user
+		//	the code is invalid.
+			if(temp)
+			{	
 				for(int i = 0; i < code.length; i++)
 				{
-					digit = guessInput.substring(i, i + 1); 
-					guess[i] = Integer.parseInt(digit);
+				//	Uses substrings to build the guess array 
+					guess[i] = Integer.parseInt(guessInput.substring(i, i + 1));
 				}
 			
-				System.out.println(printCode(guess));
 				numGuess++;
+			//	Checks to see if the users guess is correct. Feedback on their
+			//	guess is provided by the checkGuess method.
+				temp = checkGuess(guess);
+				
+				if(temp)
+				{
+					System.out.println("You've cracked the code!");
+					numGuess = attempts;
+				}
+				else if(!temp && numGuess == attempts)
+				{
+					System.out.println("Game Over.");
+				}
 			} 
-			else if(!syntax)
+			else if(!temp)
 			{
 				System.out.println("Not a valid code.");
 			}
+			
 		}
 		
 	}
@@ -82,6 +95,32 @@ public class Board
 	
 	private boolean checkGuess(int[] guess)
 	{
+		int rightNum = 0;
+		int rightNumPlace = 0;
+		
+		for(int i = 0; i < code.length; i++)
+		{
+			for(int j = 0; j < code.length; j++)
+			{
+				if(code[i] == guess[j] && i == j)
+				{
+					rightNumPlace++;
+				}
+				else if(code[i] == guess[j])
+				{
+					rightNum++;
+				}
+			}
+		}
+		
+		if(rightNumPlace == code.length) 
+		{
+			return true;
+		}
+		
+		System.out.println("Correct numbers: " + rightNum);
+		System.out.println("Correct places: " + rightNumPlace);
+		
 		return false;
 	}
 	
