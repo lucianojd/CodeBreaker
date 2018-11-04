@@ -189,4 +189,11 @@ public class Board
 		
 		return new String(codeReturn);
 	}
+	
+		public static void main(String[] args)
+	{
+		Board myBoard = new Board();
+		
+		myBoard.newGame();
+	}
 }
