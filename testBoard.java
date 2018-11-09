@@ -6,6 +6,9 @@ public class testBoard
 		
 		int[] guess = {2,2,1,1};
 		
+		System.out.println(toString(code));
+		
+		System.out.println(toString(guess));
 		System.out.println(checkGuess(code, guess));
 		
 		guess[0] = 1;
@@ -35,47 +38,50 @@ public class testBoard
 	{
 		int correctNum = 0;
 		int correctPlace = 0;
-		int tempInt = 0;
-		int[] checkedPlaces = new int[4];
+		int index = 1;
+		int[] trimmedGuess = new int[guess.length];
 		EntryStack valuesToCheck = new EntryStack();
-		EntryStack indexToCheck = new EntryStack();
-		EntryStack tempStack;
 		
 		for(int i = 0; i < 4; i++)
 		{
 			if(code[i] == guess[i])
 			{
 				correctPlace++;
-				checkedPlaces[i] = i;
 			}
 			else
 			{
-				indexToCheck.push(i);
+				valuesToCheck.push(i);
 			}
 		}
 		
-		for(int i = 0; i < 4; i++)
-		{
-			if(checkedPlaces[i] == -1)
+		trimmedGuess[0] = valuesToCheck.pop();
+		
+		while(!valuesToCheck.isEmpty())
+		{	
+			for(int i = 0; i < trimmedGuess.length; i++)
 			{
-				valuesToCheck.push(guess[i]);
+				if(valuesToCheck.peek() != trimmedGuess[i])
+				{
+					trimmedGuess[index] = valuesToCheck.pop();
+					break;
+				}
 			}
-		}
-		
-		while(!indexToCheck.isEmpty())
-		{
-			tempStack = valuesToCheck;
-			tempInt = indexToCheck.pop();
 			
-			for(int i = 0; i < valuesToCheck.getSize(); i++)
+			index++;
+		}
+		
+		for(int i = 0; i < trimmedGuess.length; i++)
+		{
+			for(int j = 0; j < code.length; j++)
 			{
-				if(guess[tempInt] == tempStack.pop())
+				if(trimmedGuess[i] == code[j])
 				{
 					correctNum++;
+					break;
 				}
 			}
 		}
-		
+
 		System.out.println(correctNum);
 		System.out.println(correctPlace);
 		
