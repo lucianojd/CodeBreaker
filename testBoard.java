@@ -4,7 +4,7 @@ public class testBoard
 	{
 		int[] code = {1,2,2,2};
 		
-		int[] guess = {2,2,1,1};
+		int[] guess = {1,1,1,1};
 		
 		System.out.println(toString(code));
 		
@@ -38,7 +38,9 @@ public class testBoard
 	{
 		int correctNum = 0;
 		int correctPlace = 0;
-		int index = 1;
+		int tempValue = 0;
+		int numOfCheckedValues = 1;
+		boolean valueWasChecked = false;
 		int[] trimmedGuess = new int[guess.length];
 		EntryStack valuesToCheck = new EntryStack();
 		
@@ -50,7 +52,7 @@ public class testBoard
 			}
 			else
 			{
-				valuesToCheck.push(i);
+				valuesToCheck.push(guess[i]);
 			}
 		}
 		
@@ -58,16 +60,20 @@ public class testBoard
 		
 		while(!valuesToCheck.isEmpty())
 		{	
-			for(int i = 0; i < trimmedGuess.length; i++)
+			tempValue = valuesToCheck.pop();
+			
+			for(int i = 0; i < numOfCheckedValues; i++)
 			{
-				if(valuesToCheck.peek() != trimmedGuess[i])
+				if(tempValue == trimmedGuess[i])
 				{
-					trimmedGuess[index] = valuesToCheck.pop();
-					break;
+					valueWasChecked = true;
+				}
+				
+				if(!valueWasChecked)
+				{
+					
 				}
 			}
-			
-			index++;
 		}
 		
 		for(int i = 0; i < trimmedGuess.length; i++)
