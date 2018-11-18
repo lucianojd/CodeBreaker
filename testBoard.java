@@ -8,6 +8,23 @@ public class testBoard
 		
 		System.out.println(toString(code));
 		
+		EntryStack test1 = new EntryStack();
+		
+		for(int i = 0; i < 3; i++)
+		{
+			test1.push(1);
+		}
+		
+		for(int i = 0; i < 3; i++)
+		{
+			test1.push(5);
+		}
+		
+		test1 = testBoard.removeDuplicateValues(test1);
+		
+		System.out.println(test1.pop());
+		System.out.println(test1.pop());
+		
 		System.out.println(toString(guess));
 		System.out.println(checkGuess(code, guess));
 		
@@ -38,10 +55,6 @@ public class testBoard
 	{
 		int correctNum = 0;
 		int correctPlace = 0;
-		int tempValue = 0;
-		int numOfCheckedValues = 1;
-		boolean valueWasChecked = false;
-		int[] trimmedGuess = new int[guess.length];
 		EntryStack valuesToCheck = new EntryStack();
 		
 		for(int i = 0; i < 4; i++)
@@ -56,37 +69,7 @@ public class testBoard
 			}
 		}
 		
-		trimmedGuess[0] = valuesToCheck.pop();
-		
-		while(!valuesToCheck.isEmpty())
-		{	
-			tempValue = valuesToCheck.pop();
-			
-			for(int i = 0; i < numOfCheckedValues; i++)
-			{
-				if(tempValue == trimmedGuess[i])
-				{
-					valueWasChecked = true;
-				}
-				
-				if(!valueWasChecked)
-				{
-					
-				}
-			}
-		}
-		
-		for(int i = 0; i < trimmedGuess.length; i++)
-		{
-			for(int j = 0; j < code.length; j++)
-			{
-				if(trimmedGuess[i] == code[j])
-				{
-					correctNum++;
-					break;
-				}
-			}
-		}
+		valuesToCheck = testBoard.removeDuplicateValues(valuesToCheck);
 
 		System.out.println(correctNum);
 		System.out.println(correctPlace);
@@ -97,6 +80,34 @@ public class testBoard
 		}
 		
 		return false;
+	}
+	
+	public static EntryStack removeDuplicateValues(EntryStack a)
+	{
+		boolean[] valueIsPresent = new boolean[10];
+		EntryStack noRepeatedValues = new EntryStack();
+		int poppedValue = 0;
+		
+		for(int i = 0; i < 10; i++)
+		{
+			valueIsPresent[i] = false;
+		}
+		
+		while(!a.isEmpty())
+		{
+			poppedValue = a.pop();
+			
+			for(int i = 0; i < 10; i++)
+			{
+				if(i == poppedValue && valueIsPresent[i] == false)
+				{
+					noRepeatedValues.push(i);
+					valueIsPresent[i] = true;
+				}
+			}
+		}
+		
+		return noRepeatedValues;
 	}
 	
 	private static String toString(int[] a)
