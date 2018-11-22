@@ -8,27 +8,40 @@ public class testBoard
 		
 		System.out.println(toString(code));
 		
-		EntryStack test1 = new EntryStack();
+		System.out.println(toString(guess));
+		System.out.println(checkGuess(code, guess));
 		
-		for(int i = 0; i < 3; i++)
-		{
-			test1.push(1);
-		}
-		
-		for(int i = 0; i < 3; i++)
-		{
-			test1.push(5);
-		}
-		
-		test1 = testBoard.removeDuplicateValues(test1);
-		
-		System.out.println(test1.pop());
-		System.out.println(test1.pop());
+		guess[3] = 2;
 		
 		System.out.println(toString(guess));
 		System.out.println(checkGuess(code, guess));
 		
-		guess[0] = 1;
+		guess[2] = 2;
+		
+		System.out.println(toString(guess));
+		System.out.println(checkGuess(code, guess));
+		
+		guess[1] = 2;
+		
+		System.out.println(toString(guess));
+		System.out.println(checkGuess(code, guess));
+		
+		guess[0] = 2;
+		
+		System.out.println(toString(guess));
+		System.out.println(checkGuess(code, guess));
+		
+		guess[3] = 1;
+		
+		System.out.println(toString(guess));
+		System.out.println(checkGuess(code, guess));
+		
+		guess[2] = 1;
+		
+		System.out.println(toString(guess));
+		System.out.println(checkGuess(code, guess));
+		
+		guess[1] = 1;
 		
 		System.out.println(toString(guess));
 		System.out.println(checkGuess(code, guess));
@@ -38,23 +51,25 @@ public class testBoard
 		System.out.println(toString(guess));
 		System.out.println(checkGuess(code, guess));
 		
-		guess[0] = 2;
 		guess[2] = 2;
 		
 		System.out.println(toString(guess));
 		System.out.println(checkGuess(code, guess));
 		
-		guess[0] = 1;
-		guess[1] = 1;
+		guess[1] = 2;
+		guess[2] = 1;
 		
 		System.out.println(toString(guess));
 		System.out.println(checkGuess(code, guess));
+		
 	}
 	
 	private static boolean checkGuess(int[] code, int[] guess)
 	{
 		int correctNum = 0;
 		int correctPlace = 0;
+		int guessValue = 0;
+		boolean[] valueIsPresent = new boolean[code.length];
 		EntryStack valuesToCheck = new EntryStack();
 		
 		for(int i = 0; i < 4; i++)
@@ -62,22 +77,45 @@ public class testBoard
 			if(code[i] == guess[i])
 			{
 				correctPlace++;
+				valueIsPresent[i] = true;
 			}
 			else
 			{
+				System.out.print("{" + guess[i] + "}");
 				valuesToCheck.push(guess[i]);
 			}
 		}
 		
-		valuesToCheck = testBoard.removeDuplicateValues(valuesToCheck);
-
-		System.out.println(correctNum);
-		System.out.println(correctPlace);
+		System.out.println();
 		
 		if(correctPlace == 4)
 		{
 			return true;
 		}
+		
+		valuesToCheck = testBoard.removeDuplicateValues(valuesToCheck);
+		
+		while(!valuesToCheck.isEmpty())
+		{
+			guessValue = valuesToCheck.pop();
+			System.out.print("(" + guessValue + ")");
+			
+			for(int i = 0; i < 4; i++)
+			{
+				if(!valueIsPresent[i])
+				{
+					if(guessValue == code[i])
+					{
+						correctNum++;
+						break;
+					}
+				}
+			}
+		}
+
+		System.out.println();
+		System.out.println(correctNum);
+		System.out.println(correctPlace);
 		
 		return false;
 	}

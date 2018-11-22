@@ -3,21 +3,41 @@ import java.util.Scanner;
 
 public class Board
 {
+	/*
+	 * input is used to retrieve the player's guess.
+	 * value is used to obtain entries for the board.
+	 * code holds the code to be guessed.
+	 * attempts is the number of attempts the player has
+	 * to guess the code.
+	 * resetBooleanArray is used to reset the arrays used
+	 * in the methods checkGuess and removeDuplicateValues.
+	*/
 	private Scanner input = new Scanner(System.in);
 	private Random 	value = new Random();
-	private int[] 	code;
+	private int[] code;
 	private int attempts;
+	private boolean[] resetBooleanArray;
 	
 	Board()
 	{
 		code = new int[4];
 		attempts = 12;
+		
+		for(int i = 0; i < 4; i++)
+		{
+			resetBooleanArray[i] = false;
+		}
 	}
 	
 	Board(int entries, int attempts)
 	{
 		code = new int[entries];
 		this.attempts = attempts;
+		
+		for(int i = 0; i < code.length; i++)
+		{
+			resetBooleanArray[i] = false;
+		}
 	}
 	
 	public void newGame()
@@ -51,7 +71,7 @@ public class Board
 				for(int i = 0; i < code.length; i++)
 				{
 				//	Uses substrings to build the guess array 
-					guess[i] = Integer.parseInt(guessInput.substring(i, i + 1));
+					guess[i] = Integer.parseInt(guessInput.charAt(i));
 				}
 			
 				numGuess++;
@@ -110,51 +130,35 @@ public class Board
 	
 	private boolean checkGuess(int[] guess)
 	{
+		
 	//	rightNum is a counter for the amount of correct number.
 	//	rightNumPlace is a counter for the correct amount of numbers in the 
-	//	correct place.
-	//	checkedValues conatins the numbers already present in the code.
 		int rightNum = 0;
 		int rightNumPlace = 0;
-		int[] checkedLocations = new int[code.length];
-		int[] checkedValues = new int[code.length];
+		boolean[] valueIsPresent = resetBooleanArray;
+		EntryStack valuesToCheck = new EntryStack();
 		
-	//	Initializes array so that there are no accidental matches
-	//	when comparing values.
-		for(int i = 0; i < code.length; i++)
-		{
-			checkedLocations[i] = -1;
-		}
-		
+	//	Initially check to see if any values are correct
 		for(int i = 0; i < code.length; i++)
 		{
 				if(code[i] == guess[i])
 				{
+					rightNumPlace++;
+					valueIsPresent[i] = true;
+					
 				//	Increment rightNumPlace if the value is equal to a value
-				//	in the coorresponding location. Add that i value to checkedValues
+				//	in the cooresponding location. Add that i value to checkedValues
 				//	as it doesn't need to be checked again.
 					rightNumPlace++;
 					checkedLocations[i] = i;
 				}
-		}
-		
-		for(int i = 0; i < code.length; i++)
-		{
-			if(i != checkedLocations[i])
-			{
-				for(int j = 0; j < code.length; j++)
+				else
 				{
-					if(code[i] == guess[j])
-					{
-						rightNum++;
-						break;
-					}
+					valuesToCheck.push(guess[i]);
 				}
-			}
 		}
 		
-		
-		
+	//	If guess was correct return true
 		if(rightNumPlace == code.length) 
 		{
 			return true;
@@ -190,7 +194,27 @@ public class Board
 		return new String(codeReturn);
 	}
 	
-		public static void main(String[] args)
+//	Removes duplicate values from stack for the 
+//	method checkGuess to use.
+	private EntryStack removeDuplicateValues(EntryStack a)
+	{
+		boolean[] valueIsPresent = resetBooleanArray;
+		EntryStack noRepeatedValues = new EntryStack();
+		int poppedValue;
+		
+		while(!a.isEmpty())
+		{
+			poppedValue = a.pop();
+			
+			if(i == poppedValue && valueIsPresent[poppedValue] == false)
+			{
+				noRepeatedValues.push(i);
+				valueIsPresent[i] = true;
+			}
+		}
+	}
+	
+	public static void main(String[] args)
 	{
 		Board myBoard = new Board();
 		
