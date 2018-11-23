@@ -16,36 +16,24 @@ public class Board
 	private Random 	value = new Random();
 	private int[] code;
 	private int attempts;
-	private boolean[] resetBooleanArray;
 	
 	Board()
 	{
 		code = new int[4];
 		attempts = 12;
-		resetBooleanArray = new boolean[10];
-		
-		for(int i = 0; i < 4; i++)
-		{
-			resetBooleanArray[i] = false;
-		}
 	}
 	
 	Board(int entries, int attempts)
 	{
 		code = new int[entries];
 		this.attempts = attempts;
-		resetBooleanArray = new boolean[10];
-		
-		for(int i = 0; i < code.length; i++)
-		{
-			resetBooleanArray[i] = false;
-		}
 	}
 	
 	public void newGame()
 	{
 	// Retrieves a board for the user.
 		buildBoard();
+		System.out.println(printCode(code));
 		
 	//	guess will hold the users guess as an integer array.
 	//	numGuess keeps track of the number of guesses the user has made.
@@ -61,7 +49,7 @@ public class Board
 	//	Main game executes until the user has made their maximum number of guesses.
 		while(numGuess < attempts)
 		{	
-		//	Promtps the user for their guess and tells them how many attempts they have left.
+		//	Prompts the user for their guess and tells them how many attempts they have left.
 			System.out.printf("Enter your guess %11s", "(" + numGuess + "/" + attempts + ") : ");
 			guessInput = input.nextLine();
 			temp = checkGuessSyntax(guessInput);
@@ -134,21 +122,23 @@ public class Board
 	{
 		
 	//	rightNum is a counter for the amount of correct number.
-	//	rightNumPlace is a counter for the correct amount of numbers in the 
+	//	rightNumPlace is a counter for the correct amount of numbers in the guess.
 		int rightNum = 0;
 		int rightNumPlace = 0;
-		boolean[] valueIsPresent = resetBooleanArray;
 		EntryStack valuesToCheck = new EntryStack();
 		int guessValue = 0;
 		
 	//	Initially check to see if any values are correct
 		for(int i = 0; i < code.length; i++)
 		{
+			//	If they are correct increment the rightNumPlace counter.
 				if(code[i] == guess[i])
 				{
 					rightNumPlace++;
-					valueIsPresent[i] = true;
 				}
+			
+			//	If the values are not in the correct place, push them
+			//	to the valuesToCheck stack.
 				else
 				{
 					valuesToCheck.push(guess[i]);
@@ -161,23 +151,26 @@ public class Board
 			return true;
 		}
 		
+	//	Remove any duplicate values from the valuesToCheck stack.
 		valuesToCheck = removeDuplicateValues(valuesToCheck);
 		
+	// Loops through all values on the valuesToCheck stack.
 		while(!valuesToCheck.isEmpty())
 		{
 			guessValue = valuesToCheck.pop();
 			
-			for(int j = 0; j < code.length; j++)
+		// If the value indexed in guess is not the same as the value
+		// indexed in code, check with the value popped. If the value
+		// popped is equal to the value indexed in code, increment rightNum and
+		// break from the loop.
+			for(int i = 0; i < code.length; i++)
 			{
-				for(int i = 0; i < 10; i++)
+				if(code[i] != guess[i]) 
 				{
-					if(!valueIsPresent[i])
+					if(guessValue == code[i])
 					{
-						if(guessValue == code[j])
-						{
-							rightNum++;
-							break;
-						}
+						rightNum++;
+						break;
 					}
 				}
 			}
@@ -217,17 +210,27 @@ public class Board
 //	method checkGuess to use.
 	private EntryStack removeDuplicateValues(EntryStack a)
 	{
-		boolean[] valueIsPresent = resetBooleanArray;
+		boolean[] valueIsPresent = new boolean[10];
 		EntryStack noRepeatedValues = new EntryStack();
 		int poppedValue;
 		
+	//	Initializes valueIsPresent to all false values.
+		for(int i = 0; i < 10; i++)
+		{
+			valueIsPresent[i] = false;
+		}
+		
+	//	Loops through the stack passed.
 		while(!a.isEmpty())
 		{
 			poppedValue = a.pop();
 			
+		//	Checks if the value being checked has been checked before.
+		//	If the value has not been checked it is pushed to the removedDuplicateValues
+		//	stack and the corresponding entry in valueIsPresent is set to true.
 			for(int i = 0; i < 10; i++)
 			{
-				if(i == poppedValue && valueIsPresent[poppedValue] == false)
+				if(i == poppedValue && valueIsPresent[i] == false)
 				{
 					noRepeatedValues.push(i);
 					valueIsPresent[i] = true;
@@ -235,6 +238,7 @@ public class Board
 			}
 		}
 		
+	// Return the stack with no duplicate entries.
 		return noRepeatedValues;
 	}
 	

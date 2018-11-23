@@ -30,7 +30,7 @@ public class EntryStack
 
 	/*
 	 * Pops the item at the top of the stack. First checks to 
-	 * see if the stack is empty before tring to pop.
+	 * see if the stack is empty before trying to pop.
 	 * No parameters.
 	 * Throws StackEmptyException.
 	*/
