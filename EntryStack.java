@@ -54,7 +54,7 @@ public class EntryStack
 	 * Returns the value at the top of the stack without
 	 * removing it.
 	 * No parameters.
-	 * Thwows StackEmptyException.
+	 * Throws StackEmptyException.
 	*/
 	public int peek()throws StackEmptyException
 	{
@@ -68,7 +68,7 @@ public class EntryStack
 
 	/*
 	 * Takes a String item and pushes it to the top of 
-	 * the stack. Contatins a special case where the head
+	 * the stack. Contains a special case where the head
 	 * is null. The Node constructor with one String parameter is
 	 * used so that the next address in the stack is null.
 	 * Param: item is used to create a new Node object to

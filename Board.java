@@ -22,6 +22,7 @@ public class Board
 	{
 		code = new int[4];
 		attempts = 12;
+		resetBooleanArray = new boolean[10];
 		
 		for(int i = 0; i < 4; i++)
 		{
@@ -33,6 +34,7 @@ public class Board
 	{
 		code = new int[entries];
 		this.attempts = attempts;
+		resetBooleanArray = new boolean[10];
 		
 		for(int i = 0; i < code.length; i++)
 		{
@@ -71,7 +73,7 @@ public class Board
 				for(int i = 0; i < code.length; i++)
 				{
 				//	Uses substrings to build the guess array 
-					guess[i] = Integer.parseInt(guessInput.charAt(i));
+					guess[i] = Character.getNumericValue(guessInput.charAt(i));
 				}
 			
 				numGuess++;
@@ -137,6 +139,7 @@ public class Board
 		int rightNumPlace = 0;
 		boolean[] valueIsPresent = resetBooleanArray;
 		EntryStack valuesToCheck = new EntryStack();
+		int guessValue = 0;
 		
 	//	Initially check to see if any values are correct
 		for(int i = 0; i < code.length; i++)
@@ -145,12 +148,6 @@ public class Board
 				{
 					rightNumPlace++;
 					valueIsPresent[i] = true;
-					
-				//	Increment rightNumPlace if the value is equal to a value
-				//	in the cooresponding location. Add that i value to checkedValues
-				//	as it doesn't need to be checked again.
-					rightNumPlace++;
-					checkedLocations[i] = i;
 				}
 				else
 				{
@@ -162,6 +159,28 @@ public class Board
 		if(rightNumPlace == code.length) 
 		{
 			return true;
+		}
+		
+		valuesToCheck = removeDuplicateValues(valuesToCheck);
+		
+		while(!valuesToCheck.isEmpty())
+		{
+			guessValue = valuesToCheck.pop();
+			
+			for(int j = 0; j < code.length; j++)
+			{
+				for(int i = 0; i < 10; i++)
+				{
+					if(!valueIsPresent[i])
+					{
+						if(guessValue == code[j])
+						{
+							rightNum++;
+							break;
+						}
+					}
+				}
+			}
 		}
 		
 		System.out.println("Correct number wrong place: " + rightNum);
@@ -206,12 +225,17 @@ public class Board
 		{
 			poppedValue = a.pop();
 			
-			if(i == poppedValue && valueIsPresent[poppedValue] == false)
+			for(int i = 0; i < 10; i++)
 			{
-				noRepeatedValues.push(i);
-				valueIsPresent[i] = true;
+				if(i == poppedValue && valueIsPresent[poppedValue] == false)
+				{
+					noRepeatedValues.push(i);
+					valueIsPresent[i] = true;
+				}
 			}
 		}
+		
+		return noRepeatedValues;
 	}
 	
 	public static void main(String[] args)
