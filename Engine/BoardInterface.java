@@ -1,3 +1,5 @@
+package Engine;
+
 public interface BoardInterface
 {
 	/*

@@ -1,10 +1,5 @@
-/*
- * Name:		Luciaono De Gianni
- * ID:			V00908223
- * Date:		Oct.23rd, 2018
- * Filename:	Node.java
- * Details:		CSC 115 Assignment 3
-*/
+package Engine;
+
 public class Node 
 {
 	int item;
