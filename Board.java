@@ -33,7 +33,6 @@ public class Board
 	{
 	// Retrieves a board for the user.
 		buildBoard();
-		System.out.println(printCode(code));
 		
 	//	guess will hold the users guess as an integer array.
 	//	numGuess keeps track of the number of guesses the user has made.
