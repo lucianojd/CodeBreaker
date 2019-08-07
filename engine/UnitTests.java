@@ -9,8 +9,6 @@ public class UnitTests {
         int[] code = {0, 4, 5, 8};
         String codeString = "0458";
         Board b = new Board(code);
-
-        System.out.println("Board Tests:");
         
         //checkGuess tests.
         if(!b.checkGuess(codeString)) {
@@ -41,6 +39,17 @@ public class UnitTests {
 
         if(!b.getFeedback("4059").equals("1:2")) {
             System.out.println("Board.getFeedback 2: FAIL");
+        }
+
+        boolean checkForNull = false;
+        for(int i = 0; i < 12; i++) {
+            if(b.getFeedback("0000") == null) {
+                checkForNull = true;
+            }
+        }
+
+        if(!checkForNull) {
+            System.out.println("Board.getFeedback 3: FAIL");
         }
     }
 }

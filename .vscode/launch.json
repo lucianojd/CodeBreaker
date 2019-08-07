@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - UnitTests",
+            "request": "launch",
+            "mainClass": "engine.UnitTests",
+            "projectName": "CodeBreaker_5be9a5b"
+        }
+    ]
+}
