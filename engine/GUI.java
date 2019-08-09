@@ -19,20 +19,24 @@ public class GUI{
 	private TextArea codeEntry;
 	private TextArea[][] feedback;
 	private TextArea gameStatus;
+	private JFrame W;
 	private Board board;
 
-	public void init() {
-		JFrame W = new JFrame();
+	public GUI() {
+		W = new JFrame();
 
 		board = new Board();
 
 		createTextFields(W);
 		createButtons(W);
-
 		W.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		W.setBounds(100,100,windowWidth,windowHeight);
 		W.setTitle("CodeBreaker");
 		W.setLayout(null);
+		W.setVisible(false);
+	}
+
+	public void open() {
 		W.setVisible(true);
 	}
 
@@ -136,13 +140,27 @@ public class GUI{
 	private class EnterActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if(board.validateGuess(codeEntry.getText())) {
-				String result = codeEntry.getText();
+				String result = board.getFeedback(codeEntry.getText());
 
-				if(board.checkGuess(result)) {
-					
+				StringTokenizer resultToken = new StringTokenizer(result, ":");
+				feedback[board.getGuessCount() - 1][0].setText(resultToken.nextToken());
+				feedback[board.getGuessCount() - 1][1].setText(resultToken.nextToken());
+				feedback[board.getGuessCount() - 1][2].setText(codeEntry.getText());
+
+				if(resultToken.hasMoreTokens()) {
+					int[] code = board.getCode();
+					String codeString = "";
+
+					for(int i = 0; i < code.length; i++) {
+						codeString = codeString + code[i];
+					}
+
+					gameStatus.setText("Game Over. The code was: " + codeString);
 				}
 
-				result = board.getFeedback(result);
+				if(board.checkGuess(codeEntry.getText())) {
+					gameStatus.setText("You've cracked the code!");
+				} 
 
 				codeEntry.setText("");
 			} else {
@@ -165,7 +183,8 @@ public class GUI{
 
 	private void resetGame() {
 		board = new Board();
-			codeEntry.setText("");
+		codeEntry.setText("");
+		gameStatus.setText("");
 
 			for(int i = 0; i < board.getGuessNum(); i++) {
 				for(int j = 0; j < 3; j++) {

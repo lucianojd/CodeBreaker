@@ -67,44 +67,45 @@ public class Board {
         return false;
     }
 
-    public String getFeedback(String guess) {
+    public String getFeedback(String guessString) {
         int correctNumber, correctPosition;
-        boolean[] numPresent = new boolean[10];
+        int[] guess = new int[guessString.length()];
+        boolean[] checkedPositions = new boolean[entryNum];
+
+        for(int i = 0; i < guess.length; i++) {
+            guess[i] = Integer.parseInt(guessString.substring(i,i+1));
+        }
 
         //Determine what numbers are in the correct position.
         correctPosition = 0;
         for(int i = 0; i < entryNum; i++) {
-            if(code[i] == Character.getNumericValue(guess.charAt(i))) {
+            if(code[i] == guess[i]) {
                 correctPosition++;
+                checkedPositions[i] = true;
             }
         }
 
         //Determine what numbers are correct but not in the correct position.
         correctNumber = 0;
-        for(int i = 0; i < numPresent.length; i++) {
-            numPresent[i] = false;
-        }
+        boolean[] correctValues = new boolean[10];
 
         for(int i = 0; i < entryNum; i++) {
-            numPresent[Character.getNumericValue(guess.charAt(i))] = true;
-        }
-
-        for(int i = 0; i < entryNum; i++) {
-            if(numPresent[code[i]]) {
-                correctNumber++;
-                numPresent[i] = false;
+            for(int j = 0; j < entryNum; j++) {
+                if(guess[i] == code[j] && !checkedPositions[i] && !checkedPositions[j]) {
+                    correctValues[guess[i]]= true;
+                       break;
+                }
             }
         }
 
-        correctNumber = correctNumber - correctPosition;
+        for(boolean i : correctValues) {
+            if(i) { correctNumber++; }
+        }
 
-        //Increment the guess counter if the guess was not correct.
-        if(correctNumber != entryNum && correctPosition != entryNum) {
-            guessCount++;
-            if(guessCount == guessNum) {
-                return null;
-            }
-            return correctPosition + ":" + correctNumber;
+        //Increment the guess counter and check if there are any guesses left.
+        guessCount++;
+        if(guessCount >= guessNum) {
+            return correctPosition + ":" + correctNumber + ":!";
         }
 
         return correctPosition + ":" + correctNumber;
@@ -116,5 +117,13 @@ public class Board {
 
     public int getGuessNum() {
         return guessNum;
+    }
+
+    public int getGuessCount() {
+        return guessCount;
+    }
+
+    int[] getCode() {
+        return code;
     }
 }

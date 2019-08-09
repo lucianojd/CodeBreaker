@@ -41,15 +41,18 @@ public class UnitTests {
             System.out.println("Board.getFeedback 2: FAIL");
         }
 
-        boolean checkForNull = false;
-        for(int i = 0; i < 12; i++) {
-            if(b.getFeedback("0000") == null) {
-                checkForNull = true;
-            }
-        }
-
-        if(!checkForNull) {
+        if(!b.getFeedback("0445").equals("2:1")) {
             System.out.println("Board.getFeedback 3: FAIL");
         }
+
+        //Check that a ! is received when you run out of guesses.
+        for(int i = 0; i < 9; i++) {
+            b.getFeedback("0000");
+        }
+
+        if(!b.getFeedback("1111").equals("0:0:!")) {
+            System.out.println("Board.getFeedback 4: FAIL");
+        }
+
     }
 }
