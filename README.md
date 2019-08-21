@@ -9,5 +9,5 @@ Build Instructions for Mac or Linux:
 
 Build Instructions for Windows:
 1. Navigate to the CodeBreaker directory with cmd
-2. Enter **javac *.java engine/*.java**
+2. Enter **javac \*.java engine/\*.java**
 3. Enter **jar cfm CodeBreaker.jar manifest.txt Main.class engine/*.class**
