@@ -4,8 +4,10 @@ Requires java version 8 or higher.
 
 Build Instructions for Mac or Linux:
 1. Navigate to the CodeBreaker directory with your terminal
-2. Enter **make jar**
+2. Enter **make**
+3. Enter **make jar**
 
 Build Instructions for Windows:
 1. Navigate to the CodeBreaker directory with cmd
-2. Enter **jar cfm CodeBreaker.jar manifest.txt Main.class engine/*.class**
+2. Enter **javac *.java engine/*.java**
+3. Enter **jar cfm CodeBreaker.jar manifest.txt Main.class engine/*.class**
